@@ -40,55 +40,6 @@ def replaces(line):
 
 
 # Проверка (основной алгоритм)
-def check1(n, m, lead, a, b):
-    print(f"Козырь: {lead}\nНаша колода: {a}\nКолода противника: {b}\n")
-
-    # Если в колоде есть козырная масть - ставим её в начало, чтобы быстрее получить ответ нет
-    if lead in b:
-        # print(b)
-        b1 = {lead: b[lead]} if lead in b else {}
-        b1.update({k: v for k, v in b.items() if k != lead})
-        b = b1
-        # print(b)
-
-    # Проходим по всем мастям
-    for i in b:
-        cards = b.get(i)
-        # Проходим по всем картам той или иной масти
-        for card in cards:
-            print(f"{card}{i}")
-            # Не может побить той же мастью
-            # print(card, a.get(i)[0])
-            if card > a.get(i)[0]:
-                # Если у нас нет козырей или карта противника сама является козырем
-                if i == lead or lead not in a:
-                    print("НЕ МОЖЕМ ПОБИТЬ")
-                    return ["NO"]
-                # Иначе используем свой минимальный козырь
-                else:
-                    # print("Иначе используем свой минимальный козырь")
-                    # print(f"Игрок 1 {a}, Игрок 2 {b}")
-
-                    our_card = a.get(lead)[-1]
-                    a[lead].remove(our_card)
-                    b[i].remove(card)
-
-                    print(f"Карта {our_card}{lead} бьет {card}{i}")
-                    # print(f"Игрок 1 {a}, Игрок 2 {b}")
-            else:
-                # print(f"Игрок 1 {a}, Игрок 2 {b}")
-
-                our_card = a.get(i)[0]
-                a[i].remove(our_card)
-                b[i].remove(card)
-
-                print(f"Карта {our_card}{i} бьет {card}{i}")
-                # print(f"Игрок 1 {a}\nИгрок 2 {b}")
-
-    return ["YES"]
-
-
-# Проверка (основной алгоритм)
 def check(n, m, lead, a, b):
     print(f"Козырь: {lead}\nНаша колода: {a}\nКолода противника: {b}\n")
 
