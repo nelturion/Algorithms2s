@@ -25,4 +25,11 @@ def main():
     write_data(result, '../files/output.txt')
 
 if __name__ == '__main__':
+    import time
+    import tracemalloc
+
+    t_start = time.perf_counter()
+    tracemalloc.start()
     main()
+    print(time.perf_counter() - t_start)
+    print(tracemalloc.get_tracemalloc_memory() / 2 ** 20, "MB")
