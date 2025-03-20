@@ -1,44 +1,42 @@
-# # Кастомное чтение файла для этой задачи
-# def file_read(path):
-#     a = []
-#     with open(path) as file:
-#         n = file.readline()
-#         for i in range(0, n):
-#             action, number = file.readline().split(" ")
-#             print(action, number)
-#             if action == "+1" or action == "1":
-#                 a.append(["+", number])
-#             elif action == "0":
-#                 a.append(["=", number])
-#             else:
-#                 a.append(["-", number])
-#         file.close()
-#     return n, a
+# Класс с реализованными методами
+class SortedStorage:
+    def __init__(self):
+        self.storage = []
 
+    def add(self, number):
+        self.storage.append(number)
+        self.storage.sort(reverse=True)
 
-def read_list(path_in, path_out):
-    sorted_storage = []
-    with open(path_in) as file_in:
-        n = int(file_in.readline())
-        with open(path_out, "w") as file_out:
+    def remove(self, number):
+        self.storage.remove(number)
+
+    def get_max(self, k):
+        return self.storage[k-1]
+
+    # Задаем само хранилище
+    @staticmethod
+    def read_list(path_in, path_out):
+        sorted_storage = SortedStorage()
+
+        with open(path_in) as file_in, open(path_out, "w") as file_out:
+            n = int(file_in.readline())
+
             for i in range(0, n):
-                action, number = file_in.readline().split(" ")
+                action, number = file_in.readline().split()
                 number = int(number)
-                print(action, number)
-                if action == "+1" or action == "1":
-                    sorted_storage.append(number)
-                    sorted_storage.sort(reverse=True)
+
+                if action == "+1" or  action == "1":
+                    sorted_storage.add(number)
                 elif action == "0":
-                    print(sorted_storage, sorted_storage[number-1])
-                    file_out.write(str(sorted_storage[number-1]) + "\n")
+                    result = sorted_storage.get_max(number)
+                    file_out.write(str(result) + "\n")
                 else:
                     sorted_storage.remove(number)
-            file_out.close()
-        file_in.close()
 
 
+# Запуск
 def main():
-    read_list("../txtf/input.txt", "../txtf/output.txt")
+    SortedStorage.read_list("../txtf/input.txt", "../txtf/output.txt")
 
 
 if __name__ == "__main__":
