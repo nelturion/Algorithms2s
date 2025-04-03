@@ -4,7 +4,7 @@ from lab3.task11.src.alchemy import process_substances
 
 
 class TestProcessSubstances(unittest.TestCase):
-    def test_example_1(self):
+    def test_common_case(self):
         input_moves = [
             "Aqua -> AquaVita",
             "AquaVita -> PhilosopherStone",
@@ -17,7 +17,7 @@ class TestProcessSubstances(unittest.TestCase):
         expected = 2
         self.assertEqual(process_substances(input_moves, start, target), expected)
 
-    def test_example_2(self):
+    def test_common_case_no_target(self):
         input_moves = [
             "Aqua -> AquaVita",
             "AquaVita -> PhilosopherStone",
@@ -75,6 +75,61 @@ class TestProcessLotsOfSubstances(unittest.TestCase):
 
         result = process_substances(input_moves, start, target)
         self.assertEqual(result, expected, f"Expected {expected}, but got {result}")
+
+
+class TestAdditionalCases(unittest.TestCase):
+    def test_start_equals_target(self):
+        # Если исходное вещество совпадает с требуемым, не требуется реакций.
+        input_moves = [
+            "Mercury -> Silver",
+            "Silver -> Gold"
+        ]
+        start = "Gold"
+        target = "Gold"
+        expected = 0
+        self.assertEqual(process_substances(input_moves, start, target), expected)
+
+    def test_repeated_reactions(self):
+        # Повторяющиеся реакции не должны влиять на результат.
+        input_moves = [
+            "Iron -> Steel",
+            "Iron -> Steel",
+            "Steel -> Alloy",
+            "Steel -> Alloy"
+        ]
+        start = "Iron"
+        target = "Alloy"
+        expected = 2
+        self.assertEqual(process_substances(input_moves, start, target), expected)
+
+    def test_multiple_paths_choose_shortest(self):
+        # Если существует несколько путей, алгоритм должен выбрать кратчайший.
+        input_moves = [
+            "C -> D",
+            "A -> B",
+            "B -> D",
+            "A -> C",
+            "D -> E",
+            "C -> E"
+        ]
+        start = "A"
+        target = "E"
+        # Пути: A->B->D->E (3 шага) или A->C->E (2 шага) => кратчайший путь - 2 шага
+        expected = 2
+        self.assertEqual(process_substances(input_moves, start, target), expected)
+
+    def test_inaccessible_substance_due_to_isolation(self):
+        # Проверка ситуации, когда изолированное вещество не соединено с другими реакциями.
+        input_moves = [
+            "X -> Y",
+            "Y -> Z",
+            "A -> B"
+        ]
+        start = "X"
+        target = "B"
+        expected = -1
+        self.assertEqual(process_substances(input_moves, start, target), expected)
+
 
 
 if __name__ == "__main__":

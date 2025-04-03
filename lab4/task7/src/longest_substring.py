@@ -12,7 +12,6 @@ def longest_common_substring(s: str, t: str) -> int:
     for i in range(1, max_len + 1):
         pow_base[i] = (pow_base[i - 1] * base) % mod
 
-    # Вычисляем префиксные хэши
     hash_s = [0] * (n + 1)
     for i in range(n):
         hash_s[i + 1] = (hash_s[i] * base + ord(s[i])) % mod
@@ -21,7 +20,6 @@ def longest_common_substring(s: str, t: str) -> int:
     for i in range(m):
         hash_t[i + 1] = (hash_t[i] * base + ord(t[i])) % mod
 
-    # Функция для вычисления хэша подстроки [i, j) по префиксному массиву
     def get_hash(prefix_hash, i, j):
         return (prefix_hash[j] - prefix_hash[i] * pow_base[j - i]) % mod
 
@@ -46,7 +44,6 @@ def longest_common_substring(s: str, t: str) -> int:
                 return True, seen_index[t_char_hash], j
         return False, -1, -1
 
-    # Двоичный поиск по длине подстроки
     low, high = 0, min(n, m)
     result = (0, 0, 0)
 
