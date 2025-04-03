@@ -18,8 +18,10 @@ def custom_write(path, text):
         f.write(text)
 
 
-def data_validation(pattern, text):
+def is_data_valid(pattern, text):
     if len(pattern) < 1:
+        return False
+    if len(pattern) > len(text):
         return False
     if len(text) > 10 ** 4:
         return False
@@ -28,6 +30,8 @@ def data_validation(pattern, text):
 
 if __name__ == "__main__":
     p, t = custom_read("../txtf/input.txt")
-    data_validation(p, t)
-    res = naive_substring_search(p, t)
-    custom_write("../txtf/output.txt", str(str(len(res)) + "\n" + str(res)))
+    if not is_data_valid(p, t):
+        custom_write("../txtf/output.txt", "invalid pattern...")
+    else:
+        res = naive_substring_search(p, t)
+        custom_write("../txtf/output.txt", str(str(len(res)) + "\n" + str(res)))
